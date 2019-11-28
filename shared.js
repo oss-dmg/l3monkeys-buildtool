@@ -6,6 +6,8 @@
 // Dependencies, Imports, Requirements
 const os = require('os')
 const path = require('path')
+// Constants
+const cli = require('cli-progress')
 // Architecture & platform modifiers
 let _arch = os.arch()
 let _platform = os.platform()
@@ -31,13 +33,13 @@ switch (_platform) {
         break;
 }
 // Shared objects
-export const progressbar = new require('cli-progress').MultiBar({
+module.exports.progressbar = new cli.MultiBar({
     format: '{filename} [{bar}] {percentage}%',
-    clearOnComplete: false,
+    clearOnComplete: true,
     hideCursor: true,
     stream: require('process').stdout,
-}, require('cli-progress').Presets.legacy)
+}, cli.Presets.legacy)
 // Platform
-export const platform = () => _platform
+module.exports.platform = () => _platform
 // Architecture
-export const arch = () => _arch
+module.exports.arch = () => _arch

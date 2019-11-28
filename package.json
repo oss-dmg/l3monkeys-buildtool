@@ -1,0 +1,21 @@
+{
+  "name": "l3monkeys_buildtools",
+  "version": "1.0.0",
+  "description": "The official self-coded BuildTool for l3monkeys-commen and CI jobs.",
+  "main": "entry.js",
+  "scripts": {
+    "test": "node entry.js"
+  },
+  "repository": "https://github.com/oss-dmg/l3monkeys-buildtool.git",
+  "author": "Benny Nystroem <benny.nystroem@derikmediagroup.xzy>",
+  "license": "GNU General Public License v3",
+  "private": true,
+  "dependencies": {
+    "async": "^3.1.0",
+    "cli-progress": "^3.4.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.14"
+  }
+}

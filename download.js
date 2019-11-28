@@ -8,20 +8,24 @@ const fs = require('fs')
 const request = require('request')
 const { progressbar } = require('./shared')
 // Download
-module.exports.download = (url, dest, cb) => {
+module.exports.download = (url, dest, callback) => {
     // Console ProgressBar
     let bar = undefined
     // Bytes calculation
     let receivedBytes = 0
     // Streaming helpers
     const file = fs.createWriteStream(dest)
-    const sendReq = request.get({
-        url: url,
-        headers: {
-            connection: 'keep-alive',
-            'Cookie': 'gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie'
-        }
-    })
+    const sendReq = 
+        url.indexOf('oracle.com') > -1 
+            ?
+              request.get({
+                url: url,
+                headers: {
+                    connection: 'keep-alive',
+                    'Cookie': 'gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie'
+                }
+              })
+            : request.get(url)
 
     // verify response code
     sendReq
@@ -38,7 +42,7 @@ module.exports.download = (url, dest, cb) => {
         })
         .on('data', (chunk) => {
             receivedBytes += chunk.length;
-            bar.update(receivedBytes, { filename: dest.replace("./", "") });
+            bar.update(receivedBytes, { filename: dest.split('/')[1] });
         })
         .pipe(file)
 
@@ -52,8 +56,8 @@ module.exports.download = (url, dest, cb) => {
 
     // close() is async, call cb after close completes
     file.on('finish', () => {
-        bar.stop()
-        file.close(cb)
+        if (bar !== undefined) bar.stop()
+        file.close(callback)
     })
     file.on('error', (err) => { // Handle errors
         file.close()
